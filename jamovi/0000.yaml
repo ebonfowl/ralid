@@ -1,0 +1,24 @@
+---
+title: Concordance, Equivalence, Error, Reliability, and ICC module for jamovi
+name: ralid
+version: 1.0.0
+jms: '1.0'
+authors:
+  - Anthony Campitelli
+maintainer: Anthony Campitelli <acampitelli@collegeofidaho.edu>
+date: '2025-12-07'
+type: R
+description: >-
+  Jamovi module providing CCC, ICC, Bland-Altman, TOST, error metrics,
+  within-session repeatability, and related plots.
+analyses:
+  - title: Agreement, Equivalence & Reliability
+    name: ralid
+    ns: ralid
+    category: analyses
+    menuGroup: Validation
+    menuTitle: Agreement, Equivalence & Reliability
+usesNative: true
+minApp: 1.0.8
+
+...

@@ -1,0 +1,120 @@
+title: Agreement, Equivalence & Reliability
+name: ralid
+jus: '3.0'
+stage: 0
+compilerMode: aggressive
+children:
+  - type: VariableSupplier
+    persistentItems: false
+    stretchFactor: 1
+    children:
+      - type: TargetLayoutBox
+        label: Measures/raters (Time 1)
+        children:
+          - type: VariablesListBox
+            name: vars
+            isTarget: true
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: CheckBox
+        name: hasRetest
+  - type: VariableSupplier
+    persistentItems: false
+    stretchFactor: 1
+    children:
+      - type: TargetLayoutBox
+        label: Re-test variables (Time 2; same order as Time 1)
+        children:
+          - type: VariablesListBox
+            name: varsRetest
+            isTarget: true
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: TextBox
+        name: eqLower
+        format: number
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: TextBox
+        name: eqUpper
+        format: number
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: TextBox
+        name: confLevel
+        format: number
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: TextBox
+        name: nBoot
+        format: number
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: TextBox
+        name: clinicalLower
+        format: number
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: TextBox
+        name: clinicalUpper
+        format: number
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: CheckBox
+        name: showBA
+      - type: CheckBox
+        name: overlayEquivRegion
+      - type: CheckBox
+        name: showMountain
+      - type: CheckBox
+        name: doTOST
+      - type: CheckBox
+        name: showTOSTDecisionCurve
+      - type: CheckBox
+        name: showICC
+      - type: CheckBox
+        name: showErrorMetrics
+      - type: CheckBox
+        name: doWithinSession
+  - type: VariableSupplier
+    persistentItems: false
+    stretchFactor: 1
+    children:
+      - type: TargetLayoutBox
+        label: Measure 1 trials
+        children:
+          - type: VariablesListBox
+            name: wsMeasure1
+            isTarget: true
+      - type: TargetLayoutBox
+        label: Measure 2 trials
+        children:
+          - type: VariablesListBox
+            name: wsMeasure2
+            isTarget: true
+      - type: TargetLayoutBox
+        label: Measure 3 trials
+        children:
+          - type: VariablesListBox
+            name: wsMeasure3
+            isTarget: true
+      - type: TargetLayoutBox
+        label: Measure 4 trials
+        children:
+          - type: VariablesListBox
+            name: wsMeasure4
+            isTarget: true
+      - type: TargetLayoutBox
+        label: Measure 5 trials
+        children:
+          - type: VariablesListBox
+            name: wsMeasure5
+            isTarget: true

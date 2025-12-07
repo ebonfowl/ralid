@@ -1,0 +1,189 @@
+---
+name: ralid
+title: Agreement, Equivalence & Reliability
+jrs: '1.1'
+
+items:
+  - name: cccTable
+    title: Concordance correlation
+    type: Table
+    rows: 0
+    columns:
+      - name: pair
+        title: Pair
+        type: text
+      - name: ccc
+        title: CCC
+        type: number
+        format: zto
+      - name: lower
+        title: Lower CI
+        type: number
+      - name: upper
+        title: Upper CI
+        type: number
+      - name: r
+        title: Pearson r
+        type: number
+      - name: cb
+        title: Bias correction
+        type: number
+
+  - name: baStats
+    title: Bland-Altman statistics (for first pair)
+    type: Table
+    rows: 1
+    columns:
+      - name: bias
+        title: Mean difference
+        type: number
+      - name: sdDiff
+        title: SD of differences
+        type: number
+      - name: loaLower
+        title: Lower LoA
+        type: number
+      - name: loaUpper
+        title: Upper LoA
+        type: number
+
+  - name: baSummary
+    title: Clinical interpretation of LoA
+    type: Preformatted
+
+  - name: errorMetrics
+    title: Error metrics (for first pair)
+    type: Table
+    rows: 9
+    columns:
+      - name: metric
+        title: Metric
+        type: text
+      - name: value
+        title: Value
+        type: number
+
+  - name: tost
+    title: TOST equivalence test (for first pair)
+    type: Table
+    rows: 1
+    columns:
+      - name: meanDiff
+        title: Mean difference
+        type: number
+      - name: lower
+        title: Lower bound
+        type: number
+      - name: upper
+        title: Upper bound
+        type: number
+      - name: tLower
+        title: t (lower)
+        type: number
+      - name: pLower
+        title: p (lower)
+        type: number
+      - name: tUpper
+        title: t (upper)
+        type: number
+      - name: pUpper
+        title: p (upper)
+        type: number
+      - name: pTOST
+        title: max p (TOST)
+        type: number
+
+  - name: iccTable
+    title: Intraclass correlations (all measures as raters at Time 1)
+    type: Table
+    rows: 6
+    columns:
+      - name: model
+        title: Model
+        type: text
+      - name: type
+        title: Type
+        type: text
+      - name: unit
+        title: Unit
+        type: text
+      - name: value
+        title: ICC
+        type: number
+
+  - name: iccRetest
+    title: Test-retest reliability
+    type: Table
+    columns:
+      - name: measure
+        title: Measure
+        type: text
+      - name: icc
+        title: ICC (consistency)
+        type: number
+      - name: sem
+        title: SEM (test-retest)
+        type: number
+      - name: mdc95
+        title: MDC95 (test-retest)
+        type: number
+      - name: n
+        title: N
+        type: integer
+
+  - name: withinSession
+    title: Within-session repeatability (up to 5 measures)
+    type: Table
+    columns:
+      - name: measure
+        title: Measure
+        type: text
+      - name: n
+        title: N
+        type: integer
+      - name: nTrials
+        title: Trials
+        type: integer
+      - name: iccSingle
+        title: ICC (single)
+        type: number
+      - name: iccAverage
+        title: ICC (average)
+        type: number
+      - name: sem
+        title: SEM (within-session)
+        type: number
+      - name: cv
+        title: CV (%)
+        type: number
+      - name: mdc95
+        title: MDC95 (within-session)
+        type: number
+
+  - name: baPlot
+    title: Bland-Altman plot (for first pair)
+    type: Image
+    renderFun: .baPlot
+    width: 480
+    height: 360
+
+  - name: mountainPlot
+    title: Mountain plot (for first pair)
+    type: Image
+    renderFun: .mountainPlot
+    width: 480
+    height: 360
+
+  - name: tostEquivPlot
+    title: Equivalence region plot (TOST, first pair)
+    type: Image
+    renderFun: .tostEquivPlot
+    width: 480
+    height: 300
+
+  - name: tostDecisionPlot
+    title: TOST decision curve (first pair)
+    type: Image
+    renderFun: .tostDecisionPlot
+    width: 480
+    height: 300

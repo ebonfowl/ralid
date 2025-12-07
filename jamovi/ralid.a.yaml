@@ -1,0 +1,145 @@
+---
+name: ralid
+title: Agreement, Equivalence & Reliability
+menuGroup: Validation
+version: '0.1.0'
+jas: '1.2'
+
+options:
+  - name: data
+    type: Data
+
+  - name: vars
+    title: Measures/raters (Time 1)
+    type: Variables
+    suggested:
+      - continuous
+    permitted:
+      - numeric
+
+  - name: hasRetest
+    title: Include re-test variables
+    type: Bool
+    default: false
+
+  - name: varsRetest
+    title: Re-test variables (Time 2; same order as Time 1)
+    type: Variables
+    suggested:
+      - continuous
+    permitted:
+      - numeric
+
+  - name: eqLower
+    title: TOST lower bound (difference scale)
+    type: Number
+    default: -0.1
+
+  - name: eqUpper
+    title: TOST upper bound (difference scale)
+    type: Number
+    default: 0.1
+
+  - name: confLevel
+    title: Confidence level
+    type: Number
+    default: 0.95
+    min: 0.5
+    max: 0.999
+
+  - name: nBoot
+    title: Bootstrap samples for CCC CI
+    type: Integer
+    default: 1000
+    min: 100
+    max: 10000
+
+  - name: clinicalLower
+    title: Clinical lower limit (BA differences)
+    type: Number
+    default: 0
+
+  - name: clinicalUpper
+    title: Clinical upper limit (BA differences)
+    type: Number
+    default: 0
+
+  - name: showBA
+    title: Bland-Altman plot
+    type: Bool
+    default: true
+
+  - name: overlayEquivRegion
+    title: Overlay equivalence region on BA plot
+    type: Bool
+    default: false
+
+  - name: showMountain
+    title: Mountain plot
+    type: Bool
+    default: true
+
+  - name: doTOST
+    title: TOST equivalence test
+    type: Bool
+    default: true
+
+  - name: showTOSTDecisionCurve
+    title: Show TOST decision curve
+    type: Bool
+    default: false
+
+  - name: showICC
+    title: Compute ICCs (within time point)
+    type: Bool
+    default: true
+
+  - name: showErrorMetrics
+    title: Show error metrics table
+    type: Bool
+    default: true
+
+  - name: doWithinSession
+    title: Within-session repeatability
+    type: Bool
+    default: false
+
+  - name: wsMeasure1
+    title: Measure 1 trials
+    type: Variables
+    suggested:
+      - continuous
+    permitted:
+      - numeric
+
+  - name: wsMeasure2
+    title: Measure 2 trials
+    type: Variables
+    suggested:
+      - continuous
+    permitted:
+      - numeric
+
+  - name: wsMeasure3
+    title: Measure 3 trials
+    type: Variables
+    suggested:
+      - continuous
+    permitted:
+      - numeric
+
+  - name: wsMeasure4
+    title: Measure 4 trials
+    type: Variables
+    suggested:
+      - continuous
+    permitted:
+      - numeric
+
+  - name: wsMeasure5
+    title: Measure 5 trials
+    type: Variables
+    suggested:
+      - continuous
+    permitted:
+      - numeric

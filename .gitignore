@@ -1,0 +1,8 @@
+# Ignore build artifacts
+build/
+
+# Ignore documentation files
+Documentation/
+
+# Ignore jamovi module package file
+ralid_1.0.0.jmo
