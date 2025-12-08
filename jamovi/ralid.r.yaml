@@ -46,6 +46,12 @@ items:
       - name: loaUpper
         title: Upper LoA
         type: number
+      - name: slope
+        title: Slope (diff ~ mean)
+        type: number
+      - name: pSlope
+        title: p-value (slope)
+        type: number
 
   - name: baSummary
     title: Clinical interpretation of LoA

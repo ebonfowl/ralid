@@ -54,6 +54,11 @@ options:
     min: 100
     max: 10000
 
+  - name: includeClinLimits
+    title: Include clinical limits on BA plot
+    type: Bool
+    default: false
+
   - name: clinicalLower
     title: Clinical lower limit (BA differences)
     type: Number
@@ -68,6 +73,21 @@ options:
     title: Bland-Altman plot
     type: Bool
     default: true
+
+  - name: baTrend
+    title: Show trend line on BA plot
+    type: Bool
+    default: false
+
+  - name: baTrendMethod
+    title: Trend line type
+    type: List
+    options:
+      - name: lm
+        title: Linear regression
+      - name: loess
+        title: LOESS smooth
+    default: lm
 
   - name: overlayEquivRegion
     title: Overlay equivalence region on BA plot

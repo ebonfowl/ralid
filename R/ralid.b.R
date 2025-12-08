@@ -123,40 +123,64 @@ ralidClass <- R6::R6Class(
                 loaLow <- bias - 1.96 * sdDiff
                 loaUp  <- bias + 1.96 * sdDiff
 
+                slope   <- NA_real_
+                pSlope  <- NA_real_
+                if (isTRUE(opts$baTrend) && length(diff) >= 2) {
+                    fit <- try(stats::lm(diff ~ mean2), silent = TRUE)
+                    if (!inherits(fit, "try-error")) {
+                        coefs <- stats::coef(fit)
+                        if (length(coefs) >= 2)
+                            slope <- coefs[2]
+                        smry <- summary(fit)$coefficients
+                        if (!is.null(smry) &&
+                            nrow(smry) >= 2 &&
+                            "Pr(>|t|)" %in% colnames(smry)) {
+                            pSlope <- smry[2, "Pr(>|t|)"]
+                        }
+                    }
+                }
+
                 res$baStats$setRow(
                     rowNo = 1,
                     values = list(
                         bias     = bias,
                         sdDiff   = sdDiff,
                         loaLower = loaLow,
-                        loaUpper = loaUp
+                        loaUpper = loaUp,
+                        slope    = slope,
+                        pSlope   = pSlope
                     )
                 )
 
                 # Clinical limits comparison summary
                 clinLow  <- opts$clinicalLower
                 clinUp   <- opts$clinicalUpper
+                includeClin <- isTRUE(opts$includeClinLimits)
                 msg <- ""
 
-                if (!is.na(clinLow) && !is.na(clinUp) && clinLow < clinUp) {
-                    if (!is.na(loaLow) && !is.na(loaUp)) {
-                        withinClin <- (loaLow >= clinLow) && (loaUp <= clinUp)
-                        if (withinClin) {
-                            msg <- sprintf(
-                                "LoA [%.3f, %.3f] are within the clinical limits [%.3f, %.3f].",
-                                loaLow, loaUp, clinLow, clinUp
-                            )
+                if (includeClin) {
+                    if (!is.na(clinLow) && !is.na(clinUp) && clinLow < clinUp) {
+                        if (!is.na(loaLow) && !is.na(loaUp)) {
+                            withinClin <- (loaLow >= clinLow) && (loaUp <= clinUp)
+                            if (withinClin) {
+                                msg <- sprintf(
+                                    "LoA [%.3f, %.3f] are within the clinical limits [%.3f, %.3f].",
+                                    loaLow, loaUp, clinLow, clinUp
+                                )
+                            } else {
+                                msg <- sprintf(
+                                    "LoA [%.3f, %.3f] exceed the clinical limits [%.3f, %.3f].",
+                                    loaLow, loaUp, clinLow, clinUp
+                                )
+                            }
                         } else {
-                            msg <- sprintf(
-                                "LoA [%.3f, %.3f] exceed the clinical limits [%.3f, %.3f].",
-                                loaLow, loaUp, clinLow, clinUp
-                            )
+                            msg <- "LoA could not be computed to compare with clinical limits."
                         }
                     } else {
-                        msg <- "LoA could not be computed to compare with clinical limits."
+                        msg <- "Clinical limits not set or invalid (lower must be < upper); no comparison with LoA made."
                     }
                 } else {
-                    msg <- "Clinical limits not set or invalid (lower must be < upper); no comparison with LoA made."
+                    msg <- "Clinical limits not included on the BA plot."
                 }
 
                 res$baSummary$setContent(msg)
@@ -268,7 +292,8 @@ ralidClass <- R6::R6Class(
                         eqUpper  = opts$eqUpper,
                         overlayEquivRegion = opts$overlayEquivRegion,
                         clinicalLower      = opts$clinicalLower,
-                        clinicalUpper      = opts$clinicalUpper
+                        clinicalUpper      = opts$clinicalUpper,
+                        includeClinLimits  = opts$includeClinLimits
                     ))
                 }
 
@@ -506,6 +531,7 @@ ralidClass <- R6::R6Class(
 
             clinLow <- state$clinicalLower
             clinUp  <- state$clinicalUpper
+            includeClin <- isTRUE(state$includeClinLimits)
 
             df <- data.frame(
                 mean = mean2,
@@ -524,7 +550,8 @@ ralidClass <- R6::R6Class(
                         "rect",
                         xmin = -Inf, xmax = Inf,
                         ymin = eqLower, ymax = eqUpper,
-                        alpha = 0.1
+                        fill = "blue",
+                        alpha = 0.075
                     )
             }
 
@@ -534,8 +561,31 @@ ralidClass <- R6::R6Class(
                 ggplot2::geom_hline(yintercept = loaLow, linetype = "dashed", linewidth = 1, color = "red") +
                 ggplot2::geom_hline(yintercept = loaUp,  linetype = "dashed", linewidth = 1, color = "red")
 
+            if (isTRUE(self$options$baTrend)) {
+                if (identical(self$options$baTrendMethod, "lm")) {
+                    p <- p + ggplot2::geom_smooth(
+                        method   = "lm",
+                        se       = TRUE,
+                        linetype = "solid",
+                        #color    = "#24c724",
+                        #fill      = "green",
+                        color    = "#969696",
+                        fill      = "gray",
+                        alpha     = 0.2,
+                        linewidth = 1
+                    )
+                } else if (identical(self$options$baTrendMethod, "loess")) {
+                    p <- p + ggplot2::geom_smooth(
+                        se       = FALSE,
+                        linetype = "solid",
+                        color    = "#969696",
+                        linewidth = 1.2
+                    )
+                }
+            }
+
             # Clinical limit lines
-            if (!is.null(clinLow) && !is.null(clinUp) &&
+            if (includeClin && !is.null(clinLow) && !is.null(clinUp) &&
                 !is.na(clinLow) && !is.na(clinUp) && clinLow < clinUp) {
                 p <- p +
                     ggplot2::geom_hline(yintercept = clinLow, linetype = "dotdash", linewidth = 1, color = "#8947af") +
@@ -597,8 +647,8 @@ ralidClass <- R6::R6Class(
                     color      = "red"
                 ) +
                 ggplot2::geom_area(
-                    fill  = "lightblue",
-                    alpha = 0.25
+                    fill  = "gray",
+                    alpha = 0.2
                 ) +
                 ggplot2::geom_line(
                     linewidth = 1.4,
@@ -739,7 +789,10 @@ agreement <- function(data,
                       nBoot = 1000,
                       clinicalLower = 0,
                       clinicalUpper = 0,
+                      includeClinLimits = FALSE,
                       showBA = TRUE,
+                      baTrend = FALSE,
+                      baTrendMethod = "lm",
                       overlayEquivRegion = FALSE,
                       showMountain = TRUE,
                       doTOST = TRUE,
@@ -766,7 +819,10 @@ agreement <- function(data,
         nBoot              = nBoot,
         clinicalLower      = clinicalLower,
         clinicalUpper      = clinicalUpper,
+        includeClinLimits  = includeClinLimits,
         showBA             = showBA,
+        baTrend            = baTrend,
+        baTrendMethod      = baTrendMethod,
         overlayEquivRegion = overlayEquivRegion,
         showMountain       = showMountain,
         doTOST             = doTOST,

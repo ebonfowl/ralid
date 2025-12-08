@@ -56,6 +56,11 @@ children:
   - type: LayoutBox
     margin: large
     children:
+      - type: CheckBox
+        name: includeClinLimits
+  - type: LayoutBox
+    margin: large
+    children:
       - type: TextBox
         name: clinicalLower
         format: number
@@ -70,6 +75,16 @@ children:
     children:
       - type: CheckBox
         name: showBA
+      - type: CheckBox
+        name: baTrend
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: ComboBox
+        name: baTrendMethod
+  - type: LayoutBox
+    margin: large
+    children:
       - type: CheckBox
         name: overlayEquivRegion
       - type: CheckBox
