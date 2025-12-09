@@ -8,7 +8,8 @@ ralidOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         initialize = function(
             vars = NULL,
             hasRetest = FALSE,
-            varsRetest = NULL,
+            trTestVars = NULL,
+            trRetestVars = NULL,
             eqLower = -0.1,
             eqUpper = 0.1,
             confLevel = 0.95,
@@ -49,9 +50,16 @@ ralidOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 "hasRetest",
                 hasRetest,
                 default=FALSE)
-            private$..varsRetest <- jmvcore::OptionVariables$new(
-                "varsRetest",
-                varsRetest,
+            private$..trTestVars <- jmvcore::OptionVariables$new(
+                "trTestVars",
+                trTestVars,
+                suggested=list(
+                    "continuous"),
+                permitted=list(
+                    "numeric"))
+            private$..trRetestVars <- jmvcore::OptionVariables$new(
+                "trRetestVars",
+                trRetestVars,
                 suggested=list(
                     "continuous"),
                 permitted=list(
@@ -169,7 +177,8 @@ ralidOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 
             self$.addOption(private$..vars)
             self$.addOption(private$..hasRetest)
-            self$.addOption(private$..varsRetest)
+            self$.addOption(private$..trTestVars)
+            self$.addOption(private$..trRetestVars)
             self$.addOption(private$..eqLower)
             self$.addOption(private$..eqUpper)
             self$.addOption(private$..confLevel)
@@ -196,7 +205,8 @@ ralidOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     active = list(
         vars = function() private$..vars$value,
         hasRetest = function() private$..hasRetest$value,
-        varsRetest = function() private$..varsRetest$value,
+        trTestVars = function() private$..trTestVars$value,
+        trRetestVars = function() private$..trRetestVars$value,
         eqLower = function() private$..eqLower$value,
         eqUpper = function() private$..eqUpper$value,
         confLevel = function() private$..confLevel$value,
@@ -222,7 +232,8 @@ ralidOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     private = list(
         ..vars = NA,
         ..hasRetest = NA,
-        ..varsRetest = NA,
+        ..trTestVars = NA,
+        ..trRetestVars = NA,
         ..eqLower = NA,
         ..eqUpper = NA,
         ..confLevel = NA,
@@ -527,7 +538,8 @@ ralidBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param data .
 #' @param vars .
 #' @param hasRetest .
-#' @param varsRetest .
+#' @param trTestVars .
+#' @param trRetestVars .
 #' @param eqLower .
 #' @param eqUpper .
 #' @param confLevel .
@@ -577,7 +589,8 @@ ralid <- function(
     data,
     vars,
     hasRetest = FALSE,
-    varsRetest,
+    trTestVars,
+    trRetestVars,
     eqLower = -0.1,
     eqUpper = 0.1,
     confLevel = 0.95,
@@ -605,7 +618,8 @@ ralid <- function(
         stop("ralid requires jmvcore to be installed (restart may be required)")
 
     if ( ! missing(vars)) vars <- jmvcore::resolveQuo(jmvcore::enquo(vars))
-    if ( ! missing(varsRetest)) varsRetest <- jmvcore::resolveQuo(jmvcore::enquo(varsRetest))
+    if ( ! missing(trTestVars)) trTestVars <- jmvcore::resolveQuo(jmvcore::enquo(trTestVars))
+    if ( ! missing(trRetestVars)) trRetestVars <- jmvcore::resolveQuo(jmvcore::enquo(trRetestVars))
     if ( ! missing(wsMeasure1)) wsMeasure1 <- jmvcore::resolveQuo(jmvcore::enquo(wsMeasure1))
     if ( ! missing(wsMeasure2)) wsMeasure2 <- jmvcore::resolveQuo(jmvcore::enquo(wsMeasure2))
     if ( ! missing(wsMeasure3)) wsMeasure3 <- jmvcore::resolveQuo(jmvcore::enquo(wsMeasure3))
@@ -615,7 +629,8 @@ ralid <- function(
         data <- jmvcore::marshalData(
             parent.frame(),
             `if`( ! missing(vars), vars, NULL),
-            `if`( ! missing(varsRetest), varsRetest, NULL),
+            `if`( ! missing(trTestVars), trTestVars, NULL),
+            `if`( ! missing(trRetestVars), trRetestVars, NULL),
             `if`( ! missing(wsMeasure1), wsMeasure1, NULL),
             `if`( ! missing(wsMeasure2), wsMeasure2, NULL),
             `if`( ! missing(wsMeasure3), wsMeasure3, NULL),
@@ -626,7 +641,8 @@ ralid <- function(
     options <- ralidOptions$new(
         vars = vars,
         hasRetest = hasRetest,
-        varsRetest = varsRetest,
+        trTestVars = trTestVars,
+        trRetestVars = trRetestVars,
         eqLower = eqLower,
         eqUpper = eqUpper,
         confLevel = confLevel,

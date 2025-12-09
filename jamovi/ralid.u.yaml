@@ -9,7 +9,7 @@ children:
     stretchFactor: 1
     children:
       - type: TargetLayoutBox
-        label: Measures/raters (Time 1)
+        label: Measures/raters (Agreement / Time 1)
         children:
           - type: VariablesListBox
             name: vars
@@ -24,10 +24,16 @@ children:
     stretchFactor: 1
     children:
       - type: TargetLayoutBox
-        label: Re-test variables (Time 2; same order as Time 1)
+        label: Test variables (Time 1; for test-retest)
         children:
           - type: VariablesListBox
-            name: varsRetest
+            name: trTestVars
+            isTarget: true
+      - type: TargetLayoutBox
+        label: Retest variables (Time 2; same order as Test variables)
+        children:
+          - type: VariablesListBox
+            name: trRetestVars
             isTarget: true
   - type: LayoutBox
     margin: large

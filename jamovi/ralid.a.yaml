@@ -10,7 +10,7 @@ options:
     type: Data
 
   - name: vars
-    title: Measures/raters (Time 1)
+    title: Measures/raters (Agreement / Time 1)
     type: Variables
     suggested:
       - continuous
@@ -18,12 +18,20 @@ options:
       - numeric
 
   - name: hasRetest
-    title: Include re-test variables
+    title: Compute test-retest reliability
     type: Bool
     default: false
 
-  - name: varsRetest
-    title: Re-test variables (Time 2; same order as Time 1)
+  - name: trTestVars
+    title: Test variables (Time 1; for test-retest)
+    type: Variables
+    suggested:
+      - continuous
+    permitted:
+      - numeric
+
+  - name: trRetestVars
+    title: Retest variables (Time 2; same order as Test variables)
     type: Variables
     suggested:
       - continuous

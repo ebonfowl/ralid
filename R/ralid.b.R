@@ -361,73 +361,81 @@ ralidClass <- R6::R6Class(
             # -----------------------------------------------------------------
             if (isTRUE(opts$hasRetest)) {
 
-                varsRetest <- opts$varsRetest
+                trTestVars   <- opts$trTestVars
+                trRetestVars <- opts$trRetestVars
 
-                if (length(varsRetest) == 0) {
+                if (length(trTestVars) == 0 || length(trRetestVars) == 0) {
                     res$iccRetest$setStatus('error')
-                    res$iccRetest$setError('Re-test variables selected flag is on, but no re-test variables were supplied.')
-                } else if (length(varsRetest) != length(vars)) {
+                    res$iccRetest$setError('Test-retest reliability is enabled, but no Test and/or Retest variables were supplied.')
+                } else if (length(trTestVars) != length(trRetestVars)) {
                     res$iccRetest$setStatus('error')
-                    res$iccRetest$setError('The number of re-test variables must match the number of Time 1 measures, in the same order.')
+                    res$iccRetest$setError('Number of test and retest variables must match (pair variables in order).')
                 } else {
 
-                    # Use only rows complete for both Time 1 and Time 2 variables
-                    allVars <- c(vars, varsRetest)
-                    subRT <- data[allVars]
-                    completeRT <- stats::complete.cases(subRT)
-                    subRT <- subRT[completeRT, , drop = FALSE]
+                    for (i in seq_along(trTestVars)) {
 
-                    if (nrow(subRT) < 2) {
-                        res$iccRetest$setStatus('error')
-                        res$iccRetest$setError('Not enough complete cases for test-retest analysis.')
-                    } else {
+                        varTest   <- trTestVars[i]
+                        varRetest <- trRetestVars[i]
 
-                        for (i in seq_along(vars)) {
-                            m1 <- vars[i]
-                            m2 <- varsRetest[i]
+                        xTest   <- jmvcore::toNumeric(data[[varTest]])
+                        xRetest <- jmvcore::toNumeric(data[[varRetest]])
 
-                            x1 <- subRT[[m1]]
-                            x2 <- subRT[[m2]]
+                        completePair <- stats::complete.cases(xTest, xRetest)
+                        xTest   <- xTest[completePair]
+                        xRetest <- xRetest[completePair]
 
-                            n  <- length(x1)
+                        n <- length(xTest)
 
-                            dfLong_m <- data.frame(
-                                subject = factor(rep(seq_len(n), times = 2)),
-                                time    = factor(rep(c("T1", "T2"), each = n)),
-                                value   = c(x1, x2)
-                            )
-
-                            aov_m <- stats::aov(value ~ subject + time, data = dfLong_m)
-                            anm   <- summary(aov_m)[[1]]
-                            MSR_m <- anm["subject", "Mean Sq"]
-                            MSE_m <- anm["Residuals", "Mean Sq"]
-
-                            # Consistency ICC across time points (two-way mixed, single measure)
-                            ICC_retest <- (MSR_m - MSE_m) / (MSR_m + (2 - 1) * MSE_m)
-
-                            sd_pool <- stats::sd(c(x1, x2), na.rm = TRUE)
-
-                            if (!is.na(sd_pool) && !is.na(ICC_retest)) {
-                                SEM   <- sd_pool * sqrt(1 - ICC_retest)
-                                MDC95 <- SEM * 1.96 * sqrt(2)
-                            } else {
-                                SEM   <- NA_real_
-                                MDC95 <- NA_real_
-                            }
-
-                            rowKey <- paste0("retest_", m1)
-
+                        if (n < 2) {
                             res$iccRetest$addRow(
-                                rowKey = rowKey,
+                                rowKey = paste0("retest_", varTest),
                                 values = list(
-                                    measure = m1,
-                                    icc     = ICC_retest,
-                                    sem     = SEM,
-                                    mdc95   = MDC95,
+                                    measure = varTest,
+                                    icc     = NA_real_,
+                                    sem     = NA_real_,
+                                    mdc95   = NA_real_,
                                     n       = n
                                 )
                             )
+                            next
                         }
+
+                        dfLong_m <- data.frame(
+                            subject = factor(rep(seq_len(n), times = 2)),
+                            time    = factor(rep(c("T1", "T2"), each = n)),
+                            value   = c(xTest, xRetest)
+                        )
+
+                        aov_m <- stats::aov(value ~ subject + time, data = dfLong_m)
+                        anm   <- summary(aov_m)[[1]]
+                        MSR_m <- anm["subject", "Mean Sq"]
+                        MSE_m <- anm["Residuals", "Mean Sq"]
+
+                        # Consistency ICC across time points (two-way mixed, single measure)
+                        ICC_retest <- (MSR_m - MSE_m) / (MSR_m + (2 - 1) * MSE_m)
+
+                        sd_pool <- stats::sd(c(xTest, xRetest), na.rm = TRUE)
+
+                        if (!is.na(sd_pool) && !is.na(ICC_retest)) {
+                            SEM   <- sd_pool * sqrt(1 - ICC_retest)
+                            MDC95 <- SEM * 1.96 * sqrt(2)
+                        } else {
+                            SEM   <- NA_real_
+                            MDC95 <- NA_real_
+                        }
+
+                        rowKey <- paste0("retest_", varTest)
+
+                        res$iccRetest$addRow(
+                            rowKey = rowKey,
+                            values = list(
+                                measure = varTest,
+                                icc     = ICC_retest,
+                                sem     = SEM,
+                                mdc95   = MDC95,
+                                n       = n
+                            )
+                        )
                     }
                 }
             }
@@ -782,7 +790,8 @@ ralidClass <- R6::R6Class(
 agreement <- function(data,
                       vars,
                       hasRetest = FALSE,
-                      varsRetest = NULL,
+                      trTestVars = NULL,
+                      trRetestVars = NULL,
                       eqLower = -0.1,
                       eqUpper = 0.1,
                       confLevel = 0.95,
@@ -812,7 +821,8 @@ agreement <- function(data,
     options <- ralidOptions$new(
         vars               = vars,
         hasRetest          = hasRetest,
-        varsRetest         = varsRetest,
+        trTestVars         = trTestVars,
+        trRetestVars       = trRetestVars,
         eqLower            = eqLower,
         eqUpper            = eqUpper,
         confLevel          = confLevel,
