@@ -1,6 +1,10 @@
 # ralid
 Jamovi module providing CCC, ICC, Bland-Altman, TOST, error metrics,   within-session repeatability, and related plots.
 
+## Statistics
+
+**Lin's Concordance Correlation Coefficient:** A single measure of agreement between scores without the assumptions inherent to other, more commonly used metrics, like intraclass correlation. [Paper](https://www.jstor.org/stable/2532051?seq=1)
+
 ## Plots
 
 ### Bland-Altman Plots
