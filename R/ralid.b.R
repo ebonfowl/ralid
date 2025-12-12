@@ -548,7 +548,7 @@ ralidClass <- R6::R6Class(
 
             p <- ggplot2::ggplot(df, ggplot2::aes(x = mean, y = diff)) +
                  ggplot2::theme_classic(base_size = 16) +
-                 ggplot2::theme(axis.line = element_line(linewidth = 1.5))
+                 ggplot2::theme(axis.line = element_line(linewidth = 1))
 
             # Equivalence region shading
             if (overlay && !is.null(eqLower) && !is.null(eqUpper) &&
@@ -635,7 +635,7 @@ ralidClass <- R6::R6Class(
 
             g <- ggplot2::ggplot(df, ggplot2::aes(x = diff, y = mountain)) +
                 ggplot2::theme_classic(base_size = 16) +
-                ggplot2::theme(axis.line = element_line(linewidth = 1.5)) +
+                ggplot2::theme(axis.line = element_line(linewidth = 1)) +
                 ggplot2::geom_line(linewidth = 1.2, color = "blue") +
                 ggplot2::labs(
                     x = "Difference (x - y)",
@@ -645,7 +645,7 @@ ralidClass <- R6::R6Class(
             g <- ggplot2::ggplot(df, ggplot2::aes(x = diff, y = mountain)) +
                 ggplot2::theme_classic(base_size = 16) +
                 ggplot2::theme(
-                    axis.line  = ggplot2::element_line(linewidth = 1.5),
+                    axis.line  = ggplot2::element_line(linewidth = 1),
                     axis.title = ggplot2::element_text(margin = margin(t = 6, r = 6, b = 6, l = 6))
                 ) +
                 ggplot2::geom_vline(
@@ -738,7 +738,8 @@ ralidClass <- R6::R6Class(
                 ) +
                 ggplot2::theme_classic(base_size = 16) +
                 ggplot2::theme(
-                    axis.line = element_line(linewidth = 1.5),
+                    axis.line = element_line(linewidth = 1),
+                    axis.line.y = ggplot2::element_blank(),
                     axis.text.y = ggplot2::element_blank(),
                     axis.ticks.y = ggplot2::element_blank(),
                     aspect.ratio = 0.25
