@@ -7,6 +7,8 @@ Jamovi module providing CCC, ICC, Bland-Altman, TOST, error metrics,   within-se
 
 **Intraclass Correlation Coefficients:** A flexible assessment of either agreement or consistency between scores. The ralid package includes one-way random effects, two-way random effects, and two-way mixed effects models that assess both single and average of K raters. Validity and reliability assessment are both provided via ICC in this module. [Paper](https://www.sciencedirect.com/science/article/pii/S1556370716000158)
 
+**Bland-Altman Limits of Agreement:** An intuitive assessment of agreement between measures which is very useful for visualizing systematic bias, proportionate bias, and clinical significance. The ralid module includes an option to plot regression lines to evaluate systematic bias visually, and outputs the slope of this line and tests the hypothesis that β<sub>1</sub> ≠ 0. It also includes options to plot clinical thresholds defined by the user and the TOST equivalance interval discussed below. [Paper](https://www.jstor.org/stable/2987937?seq=1)
+
 **Error Metrics:** Several absolute and relative error metrics are provided by the ralid module.
 - Mean bias
 - Standard deviation of difference scores
