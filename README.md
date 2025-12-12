@@ -5,7 +5,18 @@ Jamovi module providing CCC, ICC, Bland-Altman, TOST, error metrics,   within-se
 
 **Lin's Concordance Correlation Coefficient:** A single measure of agreement between scores without the assumptions inherent to other, more commonly used metrics, like intraclass correlation. [Paper](https://www.jstor.org/stable/2532051?seq=1)
 
-**Intraclass Correlation Coefficient:** A flexible assessment of other agreement or consistency between scores. The ralid package includes one-way random effects, two-way random effects, and two-way mixed effects models that assess both single and average of K raters. Validity and reliability assessment are both provided via ICC in this module [Paper](https://www.sciencedirect.com/science/article/pii/S1556370716000158)
+**Intraclass Correlation Coefficients:** A flexible assessment of either agreement or consistency between scores. The ralid package includes one-way random effects, two-way random effects, and two-way mixed effects models that assess both single and average of K raters. Validity and reliability assessment are both provided via ICC in this module. [Paper](https://www.sciencedirect.com/science/article/pii/S1556370716000158)
+
+**Error Metrics:** Several absolute and relative error metrics are provided by the ralid module.
+- Mean bias
+- Standard deviation of difference scores
+- Mean absolute error (MAE)
+- Root mean square error (RMSE)
+- Normalized RMSE
+- Mean absolute percent error (MAPE)
+- Symmetric MAPE (sMAPE)
+- Typical error (TE)
+- Typical error percent (TE%)
 
 ## Plots
 
