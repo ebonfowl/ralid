@@ -9,6 +9,8 @@ Jamovi module providing CCC, ICC, Bland-Altman, TOST, error metrics,   within-se
 
 **Bland-Altman Limits of Agreement:** An intuitive assessment of agreement between measures which is very useful for visualizing systematic bias, proportionate bias, and clinical significance. The ralid module includes an option to plot regression lines to evaluate systematic bias visually, and outputs the slope of this line and tests the hypothesis that β<sub>1</sub> ≠ 0. It also includes options to plot clinical thresholds defined by the user and the TOST equivalance interval discussed below. [Paper](https://www.jstor.org/stable/2987937?seq=1)
 
+**TOST Equivalance Assessment:** An inferential test to determine if the confidence interval around the mean bias score of two measures falls within a defined interval, i.e. that two measures are equivalent. Two one-sided tests are employed to make this determination. [Paper](https://link.springer.com/article/10.1007/bf01068419) [Full Text](https://community.jmp.com/kvoqx44227/attachments/kvoqx44227/discussions/96942/1/TOSTarticle.pdf)
+
 **Error Metrics:** Several absolute and relative error metrics are provided by the ralid module.
 - Mean bias
 - Standard deviation of difference scores
