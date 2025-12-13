@@ -16,13 +16,13 @@ Jamovi module providing CCC, ICC, Bland-Altman, TOST, error metrics,   within-se
 **Error Metrics:** Several absolute and relative error metrics are provided by the ralid module.
 - Mean bias
 - Standard deviation of difference scores
-- Mean absolute error (MAE)
-- Root mean square error (RMSE)
-- Normalized RMSE
-- Mean absolute percent error (MAPE)
-- Symmetric MAPE (sMAPE)
-- Typical error (TE)
-- Typical error percent (TE%)
+- **MAE (Mean Absolute Error):** The average absolute difference between two measures, representing typical unsigned error in the original units.
+- **RMSE (Root Mean Square Error):** The square root of the average squared differences between measures, weighting larger errors more heavily.
+- **NRMSE (Normalized RMSE):** RMSE expressed relative to a scale factor (e.g., the mean or range) to allow comparison across variables with different units or magnitudes.
+- **MAPE (Mean Absolute Percentage Error):** The average absolute error expressed as a percentage of the reference value, indicating relative error magnitude.
+- **sMAPE (Symmetric MAPE):** A percentage error metric that uses the average magnitude of the two measures in the denominator to reduce asymmetry present in standard MAPE.
+- **TE (Typical Error):** The within-subject standard error of measurement calculated as the standard deviation of paired differences divided by √2.
+- **TE% (Percent Typical Error):** Typical Error expressed as a percentage of the reference measure’s mean, providing a unitless index of relative measurement error.
 
 ## Plots
 
