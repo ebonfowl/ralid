@@ -5,24 +5,24 @@ Jamovi module providing CCC, ICC, Bland-Altman, TOST, error metrics,   within-se
 
 **Lin's Concordance Correlation Coefficient:** A single index of agreement that combines correlation with a bias correction, providing an alternative to ICC when you want a single concordance measure. Lin's CCC is moment-based, not model-based, using means, variances, and covariances of paired measurements, and does not rely on explicit variance components underpinning ANOVA-based ICC models. [Paper](https://www.jstor.org/stable/2532051?seq=1)
 
-**Liao's Concordance Correlation Coefficient:** An enhanced concordance measure that incorporates the joint geometry of paired observations, yielding a more accurate assessment of agreement when methods differ in mean, variance, or scaling. Unlike Lin’s moment-based CCC, Liao’s CCC explicitly adjusts for differences in precision and slope, reducing the upward bias in agreement estimates when variability is unequal. [Abstract](https://onlinelibrary.wiley.com/doi/abs/10.1002/pst.52)
+**Liao's Concordance Correlation Coefficient:** An enhanced concordance measure that incorporates the joint geometry of paired observations, yielding a more accurate assessment of agreement when methods differ in mean, variance, or scaling. Unlike Lin’s moment-based CCC, Liao’s CCC explicitly adjusts for differences in precision and slope, reducing the upward bias in agreement estimates when variability is unequal. [Abstract](https://onlinelibrary.wiley.com/doi/abs/10.1002/pst.52) [Full Text](https://github.com/ebonfowl/ralid/blob/main/Papers/Liao_2003_An_Improved_CCC.pdf)
 
 **Intraclass Correlation Coefficients:** A flexible assessment of either agreement or consistency between scores. The ralid package includes one-way random effects, two-way random effects, and two-way mixed effects models that assess both single and average of K raters. Validity and reliability assessment are both provided via ICC in this module. [Paper](https://www.sciencedirect.com/science/article/pii/S1556370716000158)
 
 **Bland-Altman Limits of Agreement:** An intuitive assessment of agreement between measures which is very useful for visualizing systematic bias, proportionate bias, and clinical significance. The ralid module includes an option to plot regression lines to evaluate proportionate bias visually, and outputs the slope of this line and tests the hypothesis that β<sub>1</sub> ≠ 0. It also includes options to plot clinical thresholds defined by the user and the TOST equivalence interval discussed below. [Paper](https://www.jstor.org/stable/2987937?seq=1)
 
-**TOST Equivalence Assessment:** An inferential procedure that tests whether the mean bias between two measures falls within user-specified equivalence bounds (i.e., practically negligible differences). It reverses the usual null hypothesis by considering differences outside the bounds as the null, and rejects non-equivalence only if both one-sided tests (lower and upper) are significant, which is equivalent to a confidence interval (90% CI when α = .05) lying entirely within the equivalence region. [Paper](https://link.springer.com/article/10.1007/bf01068419) [Full Text](https://community.jmp.com/kvoqx44227/attachments/kvoqx44227/discussions/96942/1/TOSTarticle.pdf)
+**TOST Equivalence Assessment:** An inferential procedure that tests whether the mean bias between two measures falls within user-specified equivalence bounds (i.e., practically negligible differences). It reverses the usual null hypothesis by considering differences outside the bounds as the null, and rejects non-equivalence only if both one-sided tests (lower and upper) are significant, which is equivalent to a confidence interval (90% CI when α = .05) lying entirely within the equivalence region. [Abstract](https://link.springer.com/article/10.1007/bf01068419) [Full Text](https://community.jmp.com/kvoqx44227/attachments/kvoqx44227/discussions/96942/1/TOSTarticle.pdf)
 
 **Error Metrics:** Several absolute and relative error metrics are provided by the ralid module.
 - Mean bias
 - Standard deviation of difference scores
-- Mean absolute error (MAE)
-- Root mean square error (RMSE)
-- Normalized RMSE
-- Mean absolute percent error (MAPE)
-- Symmetric MAPE (sMAPE)
-- Typical error (TE)
-- Typical error percent (TE%)
+- **MAE (Mean Absolute Error):** The average absolute difference between two measures, representing typical unsigned error in the original units.
+- **RMSE (Root Mean Square Error):** The square root of the average squared differences between measures, weighting larger errors more heavily.
+- **NRMSE (Normalized RMSE):** RMSE expressed relative to a scale factor (e.g., the mean or range) to allow comparison across variables with different units or magnitudes.
+- **MAPE (Mean Absolute Percentage Error):** The average absolute error expressed as a percentage of the reference value, indicating relative error magnitude.
+- **sMAPE (Symmetric MAPE):** A percentage error metric that uses the average magnitude of the two measures in the denominator to reduce asymmetry present in standard MAPE.
+- **TE (Typical Error):** The within-subject standard error of measurement calculated as the standard deviation of paired differences divided by √2.
+- **TE% (Percent Typical Error):** Typical Error expressed as a percentage of the reference measure’s mean, providing a unitless index of relative measurement error.
 
 ## Plots
 
