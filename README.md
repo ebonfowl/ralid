@@ -3,7 +3,7 @@ Jamovi module providing CCC, ICC, Bland-Altman, TOST, error metrics,   within-se
 
 ## Statistics
 
-**Lin's Concordance Correlation Coefficient:** A single index of agreement that combines correlation with a bias correction, providing an alternative to ICC when you want a single concordance measure. Lin's CCC is moment-based, not model-based, using means, variances, and covariances of paired measurements, without requiring the ANOVA or mixed-effects model assumptions inherent to ICC formulatuions. [Paper](https://www.jstor.org/stable/2532051?seq=1)
+**Lin's Concordance Correlation Coefficient:** A single index of agreement that combines correlation with a bias correction, providing an alternative to ICC when you want a single concordance measure. Lin's CCC is moment-based, not model-based, using means, variances, and covariances of paired measurements, and does not rely on explicit variance components underpinning ANOVA-based ICC models. [Paper](https://www.jstor.org/stable/2532051?seq=1)
 
 **Liao's Concordance Correlation Coefficient:** An enhanced concordance measure that incorporates the joint geometry of paired observations, yielding a more accurate assessment of agreement when methods differ in mean, variance, or scaling. Unlike Lin’s moment-based CCC, Liao’s CCC explicitly adjusts for differences in precision and slope, reducing the upward bias in agreement estimates when variability is unequal. [Abstract](https://onlinelibrary.wiley.com/doi/abs/10.1002/pst.52)
 
@@ -11,7 +11,7 @@ Jamovi module providing CCC, ICC, Bland-Altman, TOST, error metrics,   within-se
 
 **Bland-Altman Limits of Agreement:** An intuitive assessment of agreement between measures which is very useful for visualizing systematic bias, proportionate bias, and clinical significance. The ralid module includes an option to plot regression lines to evaluate proportionate bias visually, and outputs the slope of this line and tests the hypothesis that β<sub>1</sub> ≠ 0. It also includes options to plot clinical thresholds defined by the user and the TOST equivalence interval discussed below. [Paper](https://www.jstor.org/stable/2987937?seq=1)
 
-**TOST Equivalence Assessment:** An inferential test to determine if the 90% confidence interval (when α = .05) around the mean difference score of paired measures falls within a defined interval, i.e. that two measures are equivalent. Two one-sided tests are employed to make this determination and the equivalence interval is set by the user. [Paper](https://link.springer.com/article/10.1007/bf01068419) [Full Text](https://community.jmp.com/kvoqx44227/attachments/kvoqx44227/discussions/96942/1/TOSTarticle.pdf)
+**TOST Equivalence Assessment:** An inferential procedure that tests whether the mean bias between two measures falls within user-specified equivalence bounds (i.e., practically negligible differences). It reverses the usual null hypothesis by considering differences outside the bounds as the null, and rejects non-equivalence only if both one-sided tests (lower and upper) are significant, which is equivalent to a confidence interval (90% CI when α = .05) lying entirely within the equivalence region. [Paper](https://link.springer.com/article/10.1007/bf01068419) [Full Text](https://community.jmp.com/kvoqx44227/attachments/kvoqx44227/discussions/96942/1/TOSTarticle.pdf)
 
 **Error Metrics:** Several absolute and relative error metrics are provided by the ralid module.
 - Mean bias
