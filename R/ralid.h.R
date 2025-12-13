@@ -293,16 +293,29 @@ ralidResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                         `type`="text"),
                     list(
                         `name`="ccc", 
-                        `title`="CCC", 
+                        `title`="CCC (Lin)", 
                         `type`="number", 
                         `format`="zto"),
                     list(
                         `name`="lower", 
-                        `title`="Lower CI", 
+                        `title`="Lower CI (Lin)", 
                         `type`="number"),
                     list(
                         `name`="upper", 
-                        `title`="Upper CI", 
+                        `title`="Upper CI (Lin)", 
+                        `type`="number"),
+                    list(
+                        `name`="ccc_liao", 
+                        `title`="CCC (Liao)", 
+                        `type`="number", 
+                        `format`="zto"),
+                    list(
+                        `name`="lower_liao", 
+                        `title`="Lower CI (Liao)", 
+                        `type`="number"),
+                    list(
+                        `name`="upper_liao", 
+                        `title`="Upper CI (Liao)", 
                         `type`="number"),
                     list(
                         `name`="r", 

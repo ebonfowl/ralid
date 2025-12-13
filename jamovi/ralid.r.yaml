@@ -13,14 +13,24 @@ items:
         title: Pair
         type: text
       - name: ccc
-        title: CCC
+        title: CCC (Lin)
         type: number
         format: zto
       - name: lower
-        title: Lower CI
+        title: Lower CI (Lin)
         type: number
       - name: upper
-        title: Upper CI
+        title: Upper CI (Lin)
+        type: number
+      - name: ccc_liao
+        title: CCC (Liao)
+        type: number
+        format: zto
+      - name: lower_liao
+        title: Lower CI (Liao)
+        type: number
+      - name: upper_liao
+        title: Upper CI (Liao)
         type: number
       - name: r
         title: Pearson r

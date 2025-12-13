@@ -38,7 +38,7 @@ ralidClass <- R6::R6Class(
                 return()
             }
 
-            # Helper: CCC and bootstrap CI ---------------------------------
+            # Helper: CCC (Lin & Liao) and bootstrap CI --------------------
             .ccc <- function(x, y) {
                 mx <- mean(x)
                 my <- mean(y)
@@ -53,21 +53,61 @@ ralidClass <- R6::R6Class(
                 list(ccc = ccc, r = r, cb = cb)
             }
 
+            .liaoCCC <- function(x, y) {
+
+                complete <- stats::complete.cases(x, y)
+                x <- x[complete]
+                y <- y[complete]
+
+                if (length(x) < 2L) return(NA_real_)
+
+                m1 <- mean(x); m2 <- mean(y)
+                S1sq <- stats::var(x); S2sq <- stats::var(y)
+
+                if (S1sq <= 0 || S2sq <= 0) return(NA_real_)
+
+                S1 <- sqrt(S1sq); S2 <- sqrt(S2sq)
+                r_hat <- stats::cor(x, y)
+
+                if (is.na(r_hat)) return(NA_real_)
+
+                denom <- (2 - r_hat) * (S1sq + S2sq) + (m2 - m1)^2
+                if (denom <= 0) return(NA_real_)
+
+                A_hat <- (4 * S1 * S2 - r_hat * (S1sq + S2sq)) / denom
+                g_hat <- r_hat * A_hat
+
+                return(g_hat)
+            }
+
             .cccBootCI <- function(x, y, conf.level = 0.95, nboot = 1000) {
                 n <- length(x)
                 if (n < 3) {
-                    return(c(NA_real_, NA_real_))
+                    return(list(
+                        lin  = c(NA_real_, NA_real_),
+                        liao = c(NA_real_, NA_real_)
+                    ))
                 }
-                bvals <- numeric(nboot)
+                cccLinBoot  <- numeric(nboot)
+                cccLiaoBoot <- numeric(nboot)
                 for (b in seq_len(nboot)) {
                     idx <- sample.int(n, n, replace = TRUE)
-                    bvals[b] <- .ccc(x[idx], y[idx])$ccc
+                    x_b <- x[idx]
+                    y_b <- y[idx]
+                    cccLinBoot[b]  <- .ccc(x_b, y_b)$ccc
+                    cccLiaoBoot[b] <- .liaoCCC(x_b, y_b)
                 }
                 alpha <- (1 - conf.level) / 2
-                stats::quantile(bvals,
-                                probs = c(alpha, 1 - alpha),
-                                na.rm = TRUE,
-                                names = FALSE)
+                list(
+                    lin  = stats::quantile(cccLinBoot,
+                                           probs = c(alpha, 1 - alpha),
+                                           na.rm = TRUE,
+                                           names = FALSE),
+                    liao = stats::quantile(cccLiaoBoot,
+                                           probs = c(alpha, 1 - alpha),
+                                           na.rm = TRUE,
+                                           names = FALSE)
+                )
             }
 
             # -----------------------------------------------------------------
@@ -81,10 +121,26 @@ ralidClass <- R6::R6Class(
                     x  <- sub[[v1]]
                     y  <- sub[[v2]]
 
-                    cc  <- .ccc(x, y)
-                    ci  <- .cccBootCI(x, y,
-                                      conf.level = opts$confLevel,
-                                      nboot = opts$nBoot)
+                    ccLin    <- .ccc(x, y)
+                    cccLiao  <- .liaoCCC(x, y)
+                    ci       <- .cccBootCI(x, y,
+                                            conf.level = opts$confLevel,
+                                            nboot = opts$nBoot)
+
+                    lowerLin   <- NA_real_
+                    upperLin   <- NA_real_
+                    lowerLiao  <- NA_real_
+                    upperLiao  <- NA_real_
+
+                    if (!is.null(ci$lin) && length(ci$lin) >= 2) {
+                        lowerLin <- ci$lin[1]
+                        upperLin <- ci$lin[2]
+                    }
+
+                    if (!is.null(ci$liao) && length(ci$liao) >= 2) {
+                        lowerLiao <- ci$liao[1]
+                        upperLiao <- ci$liao[2]
+                    }
 
                     pairName <- paste0(v1, " vs ", v2)
 
@@ -92,11 +148,14 @@ ralidClass <- R6::R6Class(
                         rowKey = pairName,
                         values = list(
                             pair  = pairName,
-                            ccc   = cc$ccc,
-                            lower = ci[1],
-                            upper = ci[2],
-                            r     = cc$r,
-                            cb    = cc$cb
+                            ccc   = ccLin$ccc,
+                            lower = lowerLin,
+                            upper = upperLin,
+                            ccc_liao   = cccLiao,
+                            lower_liao = lowerLiao,
+                            upper_liao = upperLiao,
+                            r     = ccLin$r,
+                            cb    = ccLin$cb
                         )
                     )
                 }
